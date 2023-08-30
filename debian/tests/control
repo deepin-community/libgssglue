@@ -1,0 +1,22 @@
+Tests: libgssglue
+Depends: build-essential, libgssglue-dev, pkgconf
+
+Tests: bad-configs
+Depends: gsasl
+Restrictions: allow-stderr
+
+Tests: bad-configs-root
+Depends: gsasl
+Restrictions: allow-stderr, needs-root
+
+Tests: gsasl-dovecot-gssapi
+Depends: gsasl, dovecot-imapd, dovecot-gssapi, krb5-kdc, krb5-admin-server, valgrind-if-available
+Restrictions: allow-stderr
+
+Tests: gsasl-dovecot-gssapi-heimdal
+Depends: gsasl, dovecot-imapd, dovecot-gssapi, krb5-kdc, krb5-admin-server, valgrind-if-available, libgssapi3-heimdal
+Restrictions: allow-stderr
+
+Tests: gsasl-dovecot-gssapi-heimdal-root
+Depends: gsasl, dovecot-imapd, dovecot-gssapi, krb5-kdc, krb5-admin-server, valgrind-if-available, libgssapi3-heimdal
+Restrictions: allow-stderr needs-root

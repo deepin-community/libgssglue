@@ -1,0 +1,2 @@
+etc/gssapi_mech.conf
+usr/lib/*/lib*.so.*

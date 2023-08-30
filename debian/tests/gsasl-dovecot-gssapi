@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+set -x
+
+if command -v valgrind; then
+    VALGRIND="valgrind --error-exitcode=1"
+fi
+
+GSASL="$VALGRIND /usr/bin/gsasl" debian/tests/gsasl-dovecot-gssapi.sh
+
+exit 0
