@@ -1,0 +1,36 @@
+#!/bin/sh
+
+set -e
+set -x
+
+# Test that some bad libgssglue configurations are rejected properly.
+# This also test that the binary is actually linked to libgssglue and
+# not directly to the GSS-API library.
+
+export LC_ALL=C
+
+: ${GSASL=/usr/bin/gsasl}
+
+CMD="$GSASL --service imap --hostname foobar --client -m GSSAPI"
+
+# First test that tool works and there are no libgssglue errors in the
+# default setup.
+
+$CMD 2>&1 | grep gss_init_sec_context
+$CMD 2>&1 | (! grep -e "^warning" -e "^can't open")
+
+# Check that the GSSAPI_MECH_CONF environment variable is respected
+# and leads to error message about missing library.
+
+echo 'libfoobarbaz.so.3 mechglue_internal_krb5_init' > my_gssapi_mech.conf
+GSSAPI_MECH_CONF=my_gssapi_mech.conf \
+		$CMD 2>&1 | grep "^can't open libfoobarbaz.so.3"
+
+# Check that non-GSSAPI usage of the tool does not trigger libgssglue
+# warnings.
+GSSAPI_MECH_CONF=my_gssapi_mech.conf \
+		$GSASL --client-mechanisms 2>&1 | (! grep "^can't open libfoobarbaz.so.3")
+
+rm -f my_gssapi_mech.conf
+
+exit 0

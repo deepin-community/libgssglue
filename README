@@ -1,0 +1,6 @@
+This library exports a gssapi interface, but doesn't implement any gssapi
+mechanisms itself; instead it calls gssapi routines in other libraries,
+depending on the mechanism.
+
+The library requires C99 (stdint.h etc) and POSIX (sys/types.h,
+unistd.h etc) and should work on all modern Unix-like platforms.

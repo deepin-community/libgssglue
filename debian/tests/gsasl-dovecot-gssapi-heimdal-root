@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+set -x
+
+if command -v valgrind; then
+    VALGRIND="valgrind --error-exitcode=1"
+fi
+
+echo 'libgssapi.so.3 mechglue_internal_krb5_init' > /etc/gssapi_mech.conf
+
+GSASL="$VALGRIND /usr/bin/gsasl" debian/tests/gsasl-dovecot-gssapi.sh
+
+exit 0
